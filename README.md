@@ -16,6 +16,12 @@ There is a disconnect between the farmers and the market (off takers).
 9. Create an escrow service 
 10. Create delivery route tracking and confirmation
 
+All developer with access to this resipotary should join the group whatsapp here:
+https://chat.whatsapp.com/Bq1BO0JTzXI9d2Huxat3Qg
+
+Slack Channel
+#team-063-group-a 
+
 =======
 # ma4fp
 
