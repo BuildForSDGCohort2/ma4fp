@@ -12,7 +12,7 @@ import withAuth from "../hoc/withAuth";
 import { usePaystackPayment } from "react-paystack";
 
 const Payment = ({ shipping, payment, subtotal, dispatch, history }) => {
-	useDocumentTitle("Check Out Final Step | Salinaka");
+	useDocumentTitle("Check Out Final Step | FarmDepo");
 	const paystackAmount =
 		(subtotal + (shipping.isInternational ? 50 : 0)) * 100;
 
