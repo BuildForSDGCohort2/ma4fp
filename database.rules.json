@@ -69,17 +69,8 @@
 				"userId": {
 					".validate": "newData.isString()"
 				},
-				"productId": {
-					".validate": "newData.isString()"
-				},
-				"quantity": {
-					".validate": "newData.isNumber()"
-				},
-				"shippingAddress": {
-					".validate": "newData.isString()"
-				},
-				"email": {
-					".validate": "newData.isString()"
+				"products": {
+					".validate": "newData.isArray()"
 				}
 			}
 		}

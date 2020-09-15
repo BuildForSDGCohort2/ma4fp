@@ -205,8 +205,25 @@ class Firebase {
 	// // ---------
 
 	generateOrderKey = () => this.db.collection("orders").doc().id;
+
 	createOrder = (id, orderDetails) =>
 		this.db.collection("orders").doc(id).set(orderDetails);
+
+	productRef = (id) => this.db.collection("products").doc(id);
+
+	reduceStockTransaction = (id, qty) =>
+		this.db.runTransaction((transaction) => {
+			return transaction
+				.get(this.productRef(id))
+				.then((doc) => {
+					transaction.update(this.productRef(id), {
+						maxQuantity: doc.data().maxQuantity - qty,
+					});
+				})
+				.catch((e) => {
+					console.error(e);
+				});
+		});
 }
 
 const firebase = new Firebase();

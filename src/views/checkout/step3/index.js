@@ -1,18 +1,23 @@
 import React, { useState, useRef } from "react";
 import { Redirect } from "react-router-dom";
-
 import { CHECKOUT_STEP_2 } from "constants/routes";
 import useDocumentTitle from "hooks/useDocumentTitle";
 import { setPaymentDetails } from "actions/checkoutActions";
+import { createOrder } from "actions/orderActions";
 import { displayMoney, displayActionMessage } from "helpers/utils";
 import StepTracker from "../components/StepTracker";
 import Pagination from "../components/Pagination";
 import PaystackPayment from "./PaystackPayment";
 import withAuth from "../hoc/withAuth";
 import { usePaystackPayment } from "react-paystack";
+import { useSelector } from "react-redux";
 
 const Payment = ({ shipping, payment, subtotal, dispatch, history }) => {
 	useDocumentTitle("Check Out Final Step | FarmDepo");
+
+	const basket = useSelector((state) => state.basket);
+	const auth = useSelector((state) => state.auth);
+
 	const paystackAmount =
 		(subtotal + (shipping.isInternational ? 50 : 0)) * 100;
 
@@ -56,9 +61,6 @@ const Payment = ({ shipping, payment, subtotal, dispatch, history }) => {
 	const onConfirm = (e) => {
 		e.preventDefault();
 		// eslint-disable-next-line no-extra-boolean-cast
-		const noError = Object.keys(field).every(
-			(key) => !!field[key].value && !!!field[key].error
-		);
 
 		if (!paymentMode) return;
 		if (paymentMode === "credit") {
@@ -74,7 +76,36 @@ const Payment = ({ shipping, payment, subtotal, dispatch, history }) => {
 				);
 			}
 		} else if (paymentMode === "paystack") {
-			initializePayment();
+			initializePayment((res) => {
+				if (res.status === "success") {
+					let orderedProducts = [];
+					for (const product of basket) {
+						orderedProducts.push({
+							id: product.id,
+							quantity: product.quantity,
+						});
+					}
+
+					// Remove irrelevant data
+					const {
+						isDone,
+						isInternational,
+						...cleanShipping
+					} = shipping;
+
+					const order = {
+						userId: auth.id,
+						products: orderedProducts,
+						orderDate: new Date().getTime(),
+						shipping: {
+							...cleanShipping,
+						},
+					};
+
+					dispatch(createOrder(order));
+				} else {
+				}
+			});
 		} else {
 			displayActionMessage("Feature not ready yet :)", "info");
 		}

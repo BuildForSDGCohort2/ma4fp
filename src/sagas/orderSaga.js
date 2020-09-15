@@ -1,4 +1,4 @@
-import { call, put } from "redux-saga/effects";
+import { all, call, put } from "redux-saga/effects";
 import firebase from "firebase/firebase";
 
 import { CREATE_ORDER, SET_REQUEST_STATUS, LOADING } from "constants/constants";
@@ -36,6 +36,15 @@ function* orderSaga({ type, payload }) {
 				yield initRequest();
 				const key = yield call(firebase.generateOrderKey);
 				yield call(firebase.createOrder, key, payload);
+				yield all(
+					payload.products.map((product) =>
+						call(
+							firebase.reduceStockTransaction,
+							product.id,
+							product.quantity
+						)
+					)
+				);
 				yield put(
 					createOrderSuccess({
 						id: key,
