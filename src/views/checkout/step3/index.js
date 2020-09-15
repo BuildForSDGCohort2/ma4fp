@@ -26,20 +26,9 @@ const Payment = ({ shipping, payment, subtotal, dispatch, history }) => {
 	const initializePayment = usePaystackPayment(config);
 
 	const [paymentMode, setPaymentMode] = useState(payment.type || "paystack");
-	const collapseCreditHeight = useRef(null);
-	const cardInputRef = useRef(null);
-	const [field, setField] = useState({
-		name: { value: payment.data.name ? payment.data.name : "" },
-		cardnumber: {
-			value: payment.data.cardnumber ? payment.data.cardnumber : "",
-		},
-		expiry: { value: payment.data.expiry ? payment.data.expiry : "" },
-		ccv: { value: payment.data.ccv ? payment.data.ccv : "" },
-	});
 
 	const onPaystackModeChange = () => {
 		setPaymentMode("paystack");
-		// collapseCreditHeight.current.parentElement.style.height = "97px";
 	};
 
 	const savePaymentDetails = () => {
