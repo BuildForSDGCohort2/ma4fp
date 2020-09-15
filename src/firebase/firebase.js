@@ -1,7 +1,7 @@
-import app from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/firestore';
-import 'firebase/storage';
+import app from "firebase/app";
+import "firebase/auth";
+import "firebase/firestore";
+import "firebase/storage";
 
 const firebaseConfig = {
 	apiKey: process.env.FIREBASE_API_KEY,
@@ -10,7 +10,7 @@ const firebaseConfig = {
 	projectId: process.env.FIREBASE_PROJECT_ID,
 	storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
 	messagingSenderId: process.env.FIREBASE_MSG_SENDER_ID,
-	appId: process.env.FIREBASE_APP_ID
+	appId: process.env.FIREBASE_APP_ID,
 };
 
 class Firebase {
@@ -22,59 +22,77 @@ class Firebase {
 		this.auth = app.auth();
 	}
 
-	// AUTH ACTIONS 
+	// AUTH ACTIONS
 	// --------
 
-	createAccount = (email, password) => this.auth.createUserWithEmailAndPassword(email, password);
+	createAccount = (email, password) =>
+		this.auth.createUserWithEmailAndPassword(email, password);
 
-	signIn = (email, password) => this.auth.signInWithEmailAndPassword(email, password);
+	signIn = (email, password) =>
+		this.auth.signInWithEmailAndPassword(email, password);
 
-	signInWithGoogle = () => this.auth.signInWithPopup(new app.auth.GoogleAuthProvider());
+	signInWithGoogle = () =>
+		this.auth.signInWithPopup(new app.auth.GoogleAuthProvider());
 
-	signInWithFacebook = () => this.auth.signInWithPopup(new app.auth.FacebookAuthProvider());
+	signInWithFacebook = () =>
+		this.auth.signInWithPopup(new app.auth.FacebookAuthProvider());
 
-	signInWithGithub = () => this.auth.signInWithPopup(new app.auth.GithubAuthProvider());
+	signInWithGithub = () =>
+		this.auth.signInWithPopup(new app.auth.GithubAuthProvider());
 
 	signOut = () => this.auth.signOut();
 
-	passwordReset = email => this.auth.sendPasswordResetEmail(email);
+	passwordReset = (email) => this.auth.sendPasswordResetEmail(email);
 
-	addUser = (id, user) => this.db.collection('users').doc(id).set(user);
+	addUser = (id, user) => this.db.collection("users").doc(id).set(user);
 
-	getUser = id => this.db.collection('users').doc(id).get();
+	getUser = (id) => this.db.collection("users").doc(id).get();
 
-	passwordUpdate = password => this.auth.currentUser.updatePassword(password);
+	passwordUpdate = (password) =>
+		this.auth.currentUser.updatePassword(password);
 
 	changePassword = (currentPassword, newPassword) => {
 		return new Promise((resolve, reject) => {
-			this.reauthenticate(currentPassword).then(() => {
-				const user = this.auth.currentUser;
-				user.updatePassword(newPassword).then(() => {
-					resolve('Password updated successfully!');
-				}).catch(error => reject(error));
-			}).catch(error => reject(error));
+			this.reauthenticate(currentPassword)
+				.then(() => {
+					const user = this.auth.currentUser;
+					user.updatePassword(newPassword)
+						.then(() => {
+							resolve("Password updated successfully!");
+						})
+						.catch((error) => reject(error));
+				})
+				.catch((error) => reject(error));
 		});
-	}
+	};
 
 	reauthenticate = (currentPassword) => {
 		const user = this.auth.currentUser;
-		const cred = app.auth.EmailAuthProvider.credential(user.email, currentPassword);
+		const cred = app.auth.EmailAuthProvider.credential(
+			user.email,
+			currentPassword
+		);
 
 		return user.reauthenticateWithCredential(cred);
-	}
+	};
 
 	updateEmail = (currentPassword, newEmail) => {
 		return new Promise((resolve, reject) => {
-			this.reauthenticate(currentPassword).then(() => {
-				const user = this.auth.currentUser;
-				user.updateEmail(newEmail).then(() => {
-					resolve('Email Successfully updated');
-				}).catch(error => reject(error));
-			}).catch(error => reject(error));
+			this.reauthenticate(currentPassword)
+				.then(() => {
+					const user = this.auth.currentUser;
+					user.updateEmail(newEmail)
+						.then(() => {
+							resolve("Email Successfully updated");
+						})
+						.catch((error) => reject(error));
+				})
+				.catch((error) => reject(error));
 		});
-	}
+	};
 
-	updateProfile = (id, updates) => this.db.collection('users').doc(id).update(updates);
+	updateProfile = (id, updates) =>
+		this.db.collection("users").doc(id).update(updates);
 
 	onAuthStateChanged = () => {
 		return new Promise((resolve, reject) => {
@@ -82,13 +100,14 @@ class Firebase {
 				if (user) {
 					resolve(user);
 				} else {
-					reject(new Error('Auth State Changed failed'));
+					reject(new Error("Auth State Changed failed"));
 				}
 			});
 		});
-	}
+	};
 
-	setAuthPersistence = () => this.auth.setPersistence(app.auth.Auth.Persistence.LOCAL);
+	setAuthPersistence = () =>
+		this.auth.setPersistence(app.auth.Auth.Persistence.LOCAL);
 
 	// // PRODUCT ACTIONS
 	// // ---------
@@ -99,20 +118,26 @@ class Firebase {
 		return new Promise(async (resolve, reject) => {
 			if (lastRefKey) {
 				try {
-					const query = this.db.collection('products').orderBy(app.firestore.FieldPath.documentId()).startAfter(lastRefKey).limit(12);
+					const query = this.db
+						.collection("products")
+						.orderBy(app.firestore.FieldPath.documentId())
+						.startAfter(lastRefKey)
+						.limit(12);
 					const snapshot = await query.get();
 					const products = [];
-					snapshot.forEach(doc => products.push({ id: doc.id, ...doc.data() }));
+					snapshot.forEach((doc) =>
+						products.push({ id: doc.id, ...doc.data() })
+					);
 					const lastKey = snapshot.docs[snapshot.docs.length - 1];
 
 					resolve({ products, lastKey });
 				} catch (e) {
-					reject(new Error(':( Failed to fetch products.'));
+					reject(new Error(":( Failed to fetch products."));
 				}
 			} else {
 				const timeout = setTimeout(() => {
 					didTimeout = true;
-					reject(new Error('Request timeout, please try again'));
+					reject(new Error("Request timeout, please try again"));
 				}, 15000);
 
 				try {
@@ -122,45 +147,83 @@ class Firebase {
 					// better than making a query from firebase
 					// NOT AVAILEBLE IN FIRESTORE const request = await fetch(`${process.env.FIREBASE_DB_URL}/products.json?shallow=true`);
 
-					const totalQuery = await this.db.collection('products').get();
+					const totalQuery = await this.db
+						.collection("products")
+						.get();
 					const total = totalQuery.docs.length;
-					const query = this.db.collection('products').orderBy(app.firestore.FieldPath.documentId()).limit(12);
+					const query = this.db
+						.collection("products")
+						.orderBy(app.firestore.FieldPath.documentId())
+						.limit(12);
 					const snapshot = await query.get();
 
 					clearTimeout(timeout);
 					if (!didTimeout) {
 						const products = [];
-						snapshot.forEach(doc => products.push({ id: doc.id, ...doc.data() }));
+						snapshot.forEach((doc) =>
+							products.push({ id: doc.id, ...doc.data() })
+						);
 						const lastKey = snapshot.docs[snapshot.docs.length - 1];
 
 						resolve({ products, lastKey, total });
 					}
 				} catch (e) {
 					if (didTimeout) return;
-					console.log('Failed to fetch products: An error occured while trying to fetch products or there may be no product ', e);
-					reject(new Error(':( Failed to fetch products.'));
+					console.log(
+						"Failed to fetch products: An error occured while trying to fetch products or there may be no product ",
+						e
+					);
+					reject(new Error(":( Failed to fetch products."));
 				}
 			}
 		});
-	}
+	};
 
+	addProduct = (id, product) =>
+		this.db.collection("products").doc(id).set(product);
 
-	addProduct = (id, product) => this.db.collection('products').doc(id).set(product);
-
-	generateKey = () => this.db.collection('products').doc().id;
+	generateKey = () => this.db.collection("products").doc().id;
 
 	storeImage = async (id, folder, imageFile) => {
-		const snapshot = await this.storage.ref(folder).child(id).put(imageFile);
+		const snapshot = await this.storage
+			.ref(folder)
+			.child(id)
+			.put(imageFile);
 		const downloadURL = await snapshot.ref.getDownloadURL();
 
 		return downloadURL;
-	}
+	};
 
-	deleteImage = id => this.storage.ref('products').child(id).delete();
+	deleteImage = (id) => this.storage.ref("products").child(id).delete();
 
-	editProduct = (id, updates) => this.db.collection('products').doc(id).update(updates);
+	editProduct = (id, updates) =>
+		this.db.collection("products").doc(id).update(updates);
 
-	removeProduct = id => this.db.collection('products').doc(id).delete();
+	removeProduct = (id) => this.db.collection("products").doc(id).delete();
+
+	// // ORDER ACTIONS
+	// // ---------
+
+	generateOrderKey = () => this.db.collection("orders").doc().id;
+
+	createOrder = (id, orderDetails) =>
+		this.db.collection("orders").doc(id).set(orderDetails);
+
+	productRef = (id) => this.db.collection("products").doc(id);
+
+	reduceStockTransaction = (id, qty) =>
+		this.db.runTransaction((transaction) => {
+			return transaction
+				.get(this.productRef(id))
+				.then((doc) => {
+					transaction.update(this.productRef(id), {
+						maxQuantity: doc.data().maxQuantity - qty,
+					});
+				})
+				.catch((e) => {
+					console.error(e);
+				});
+		});
 }
 
 const firebase = new Firebase();
