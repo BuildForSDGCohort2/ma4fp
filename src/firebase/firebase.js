@@ -28,7 +28,13 @@ class Firebase {
 	createAccount = (email, password) =>
 		this.auth.createUserWithEmailAndPassword(email, password);
 
-	sendEmailVerification = (ref) => ref.user.sendEmailVerification();
+	// Redirect URL after confirming email
+	actionCodeSettings = {
+		url: "https://farmly-dev.web.app/",
+	};
+
+	sendEmailVerification = () =>
+		this.auth.currentUser.sendEmailVerification(this.actionCodeSettings);
 
 	signIn = (email, password) =>
 		this.auth.signInWithEmailAndPassword(email, password);

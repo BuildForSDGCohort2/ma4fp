@@ -126,13 +126,12 @@ function* authSaga({ type, payload }) {
 		case SIGNUP:
 			try {
 				yield initRequest();
-
 				const ref = yield call(
 					firebase.createAccount,
 					payload.email,
 					payload.password
 				);
-				yield call(firebase.sendEmailVerification, ref);
+				yield call(firebase.sendEmailVerification);
 				const fullname = payload.fullname
 					.split(" ")
 					.map((name) =>
