@@ -28,6 +28,8 @@ class Firebase {
 	createAccount = (email, password) =>
 		this.auth.createUserWithEmailAndPassword(email, password);
 
+	sendEmailVerification = (ref) => ref.user.sendEmailVerification();
+
 	signIn = (email, password) =>
 		this.auth.signInWithEmailAndPassword(email, password);
 
