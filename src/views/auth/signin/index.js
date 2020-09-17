@@ -1,22 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
-import useDidMount from 'hooks/useDidMount';
-import useDocumentTitle from 'hooks/useDocumentTitle';
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import useDidMount from "hooks/useDidMount";
+import useDocumentTitle from "hooks/useDocumentTitle";
 import {
 	signIn,
 	signInWithGoogle,
 	signInWithFacebook,
-	signInWithGithub
-} from 'actions/authActions';
-import Input from 'components/ui/Input';
-import { FORGOT_PASSWORD } from 'constants/routes';
-import CircularProgress from 'components/ui/CircularProgress';
+	signInWithGithub,
+} from "actions/authActions";
+import Input from "components/ui/Input";
+import { FORGOT_PASSWORD } from "constants/routes";
+import CircularProgress from "components/ui/CircularProgress";
 
 const SignIn = (props) => {
-	const { authStatus, isAuthenticating } = useSelector(state => ({
+	const { authStatus, isAuthenticating } = useSelector((state) => ({
 		authStatus: state.app.authStatus,
-		isAuthenticating: state.app.isAuthenticating
+		isAuthenticating: state.app.isAuthenticating,
 	}));
 	const [providerSelected, setProviderSelected] = useState(undefined);
 
@@ -26,18 +26,17 @@ const SignIn = (props) => {
 	const [signInStatus, setSignInStatus] = useState({});
 	const [isSigningIn, setIsSigningIn] = useState(false);
 	const [field, setField] = useState({});
-	// --- 
+	// ---
 	const dispatch = useDispatch();
 	const didMount = useDidMount();
 
-	useDocumentTitle('Sign In | Salinaka');
+	useDocumentTitle("Sign In | FarmDepo");
 	useEffect(() => {
 		if (didMount) {
 			setSignInStatus(authStatus);
 			setIsSigningIn(isAuthenticating);
 		}
 	}, [authStatus, isAuthenticating]);
-
 
 	const onEmailInput = (e, value, error) => {
 		setField({ ...field, email: { value, error } });
@@ -47,30 +46,32 @@ const SignIn = (props) => {
 		setField({ ...field, password: { value, error } });
 	};
 
-	const onSignUp = () => props.history.push('/signup');
+	const onSignUp = () => props.history.push("/signup");
 
 	const onSignInWithGoogle = () => {
 		dispatch(signInWithGoogle());
-		setProviderSelected('google');
+		setProviderSelected("google");
 	};
 
 	const onSignInWithFacebook = () => {
 		dispatch(signInWithFacebook());
-		setProviderSelected('facebook');
+		setProviderSelected("facebook");
 	};
 
 	const onSignInWithGithub = () => {
 		dispatch(signInWithGithub());
-		setProviderSelected('github');
+		setProviderSelected("github");
 	};
 
 	const onSubmitForm = (e) => {
 		e.preventDefault();
-		const noError = Object.keys(field).every(key => !!field[key].value && !field[key].error);
+		const noError = Object.keys(field).every(
+			(key) => !!field[key].value && !field[key].error
+		);
 
 		if (noError) {
 			dispatch(signIn(field.email.value, field.password.value));
-			setProviderSelected('signin');
+			setProviderSelected("signin");
 		}
 	};
 
@@ -78,7 +79,7 @@ const SignIn = (props) => {
 		if (isSigningIn) e.preventDefault();
 	};
 
-	const isSuccess = !!authStatus.success && authStatus.type === 'auth';
+	const isSuccess = !!authStatus.success && authStatus.type === "auth";
 
 	return (
 		<div className="signin-content">
@@ -97,9 +98,15 @@ const SignIn = (props) => {
 			)}
 			{!isSuccess && (
 				<>
-					<div className={`signin ${signInStatus.message && (!authStatus.success && 'input-error')}`}>
+					<div
+						className={`signin ${
+							signInStatus.message &&
+							!authStatus.success &&
+							"input-error"
+						}`}
+					>
 						<div className="signin-main">
-							<h3>Sign in to Salinaka</h3>
+							<h3>Sign in to FarmDepo</h3>
 							<br />
 							<div className="signin-wrapper">
 								<form onSubmit={onSubmitForm}>
@@ -130,7 +137,9 @@ const SignIn = (props) => {
 									<div className="signin-field signin-action">
 										<Link
 											onClick={onClickLink}
-											style={{ textDecoration: 'underline' }}
+											style={{
+												textDecoration: "underline",
+											}}
 											to={FORGOT_PASSWORD}
 										>
 											<span>Forgot password?</span>
@@ -142,9 +151,16 @@ const SignIn = (props) => {
 										>
 											<CircularProgress
 												theme="light"
-												visible={isSigningIn && providerSelected === 'signin'}
+												visible={
+													isSigningIn &&
+													providerSelected ===
+														"signin"
+												}
 											/>
-											{isSigningIn && providerSelected === 'signin' ? 'Signing In' : 'Sign In'}
+											{isSigningIn &&
+											providerSelected === "signin"
+												? "Signing In"
+												: "Sign In"}
 										</button>
 									</div>
 								</form>
@@ -159,11 +175,12 @@ const SignIn = (props) => {
 								disabled={isSigningIn}
 								onClick={onSignInWithFacebook}
 							>
-								{isSigningIn && providerSelected === 'facebook' ? (
+								{isSigningIn &&
+								providerSelected === "facebook" ? (
 									<CircularProgress theme="light" />
 								) : (
-										<i className="fab fa-facebook" />
-									)}
+									<i className="fab fa-facebook" />
+								)}
 								<span>Sign in with Facebook</span>
 							</button>
 							<button
@@ -171,11 +188,12 @@ const SignIn = (props) => {
 								disabled={isSigningIn}
 								onClick={onSignInWithGoogle}
 							>
-								{isSigningIn && providerSelected === 'google' ? (
+								{isSigningIn &&
+								providerSelected === "google" ? (
 									<CircularProgress theme="dark" />
 								) : (
-										<i className="fab fa-google" />
-									)}
+									<i className="fab fa-google" />
+								)}
 								<span>Sign in with Google</span>
 							</button>
 							<button
@@ -183,11 +201,12 @@ const SignIn = (props) => {
 								disabled={isSigningIn}
 								onClick={onSignInWithGithub}
 							>
-								{isSigningIn && providerSelected === 'github' ? (
+								{isSigningIn &&
+								providerSelected === "github" ? (
 									<CircularProgress theme="light" />
 								) : (
-										<i className="fab fa-github" />
-									)}
+									<i className="fab fa-github" />
+								)}
 								<span>Sign in with GitHub</span>
 							</button>
 						</div>
@@ -202,7 +221,7 @@ const SignIn = (props) => {
 							onClick={onSignUp}
 						>
 							Sign Up
-            </button>
+						</button>
 					</div>
 				</>
 			)}
