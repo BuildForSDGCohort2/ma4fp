@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import Input from 'components/ui/Input';
-import useDocumentTitle from 'hooks/useDocumentTitle';
-import useDidMount from 'hooks/useDidMount';
-import { signUp } from 'actions/authActions';
+import React, { useState, useEffect, useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import Input from "components/ui/Input";
+import useDocumentTitle from "hooks/useDocumentTitle";
+import useDidMount from "hooks/useDidMount";
+import { signUp } from "actions/authActions";
 
-import CircularProgress from 'components/ui/CircularProgress';
+import CircularProgress from "components/ui/CircularProgress";
 
 const SignUp = (props) => {
 	const [passwordHidden, setPasswordHidden] = useState(true);
@@ -16,16 +16,16 @@ const SignUp = (props) => {
 	const [signUpStatus, setSignUpStatus] = useState({});
 	const [isSigningUp, setIsSigningUp] = useState(false);
 	// ---
-	const { isAuthenticating, authStatus } = useSelector(state => ({
+	const { isAuthenticating, authStatus } = useSelector((state) => ({
 		isAuthenticating: state.app.isAuthenticating,
-		authStatus: state.app.authStatus
+		authStatus: state.app.authStatus,
 	}));
 	const [field, setField] = useState({});
 	const didMount = useDidMount();
 	const dispatch = useDispatch();
 	const passwordField = useRef(null);
 
-	useDocumentTitle('Sign Up | Salinaka');
+	useDocumentTitle("Sign Up | FarmDepo");
 	useEffect(() => {
 		if (didMount) {
 			setSignUpStatus(authStatus);
@@ -47,21 +47,25 @@ const SignUp = (props) => {
 
 	const onTogglePasswordVisibility = () => setPasswordHidden(!passwordHidden);
 
-	const onClickSignIn = () => props.history.push('/signin');
+	const onClickSignIn = () => props.history.push("/signin");
 
 	const onFormSubmit = (e) => {
 		e.preventDefault();
-		const noError = Object.keys(field).every(key => !!field[key].value && !field[key].error);
+		const noError = Object.keys(field).every(
+			(key) => !!field[key].value && !field[key].error
+		);
 
 		if (noError) {
-			dispatch(signUp({
-				fullname: field.fullname.value.trim(),
-				email: field.email.value.trim().toLowerCase(),
-				password: field.password.value.trim()
-			}));
+			dispatch(
+				signUp({
+					fullname: field.fullname.value.trim(),
+					email: field.email.value.trim().toLowerCase(),
+					password: field.password.value.trim(),
+				})
+			);
 		}
 	};
-	const isSuccess = !!authStatus.success && authStatus.type === 'auth';
+	const isSuccess = !!authStatus.success && authStatus.type === "auth";
 
 	return (
 		<div className="signup">
@@ -80,8 +84,14 @@ const SignUp = (props) => {
 			)}
 			{!isSuccess && (
 				<>
-					<div className={`signup-wrapper ${signUpStatus.message && (!authStatus.success && 'input-error')}`}>
-						<h3>Sign up to Salinaka</h3>
+					<div
+						className={`signup-wrapper ${
+							signUpStatus.message &&
+							!authStatus.success &&
+							"input-error"
+						}`}
+					>
+						<h3>Sign up to FarmDepo</h3>
 						<form onSubmit={onFormSubmit}>
 							<div className="signup-field">
 								<Input
@@ -92,7 +102,7 @@ const SignUp = (props) => {
 									onInputChange={onFullnameInput}
 									placeholder="John Doe"
 									readOnly={isSigningUp}
-									style={{ textTransform: 'capitalize' }}
+									style={{ textTransform: "capitalize" }}
 									type="text"
 								/>
 							</div>
@@ -109,7 +119,12 @@ const SignUp = (props) => {
 								/>
 							</div>
 							<div className="signup-field">
-								<div style={{ display: 'flex', alignItems: 'flex-end' }} >
+								<div
+									style={{
+										display: "flex",
+										alignItems: "flex-end",
+									}}
+								>
 									<div style={{ flexGrow: 1 }}>
 										<Input
 											field="password"
@@ -121,7 +136,11 @@ const SignUp = (props) => {
 											readOnly={isSigningUp}
 											ref={passwordField}
 											style={{ marginBottom: 0 }}
-											type={passwordHidden ? 'password' : 'text'}
+											type={
+												passwordHidden
+													? "password"
+													: "text"
+											}
 										/>
 									</div>
 									<button
@@ -130,7 +149,11 @@ const SignUp = (props) => {
 										onClick={onTogglePasswordVisibility}
 										type="button"
 									>
-										{passwordHidden ? <i className="fa fa-eye" /> : <i className="fa fa-eye-slash" />}
+										{passwordHidden ? (
+											<i className="fa fa-eye" />
+										) : (
+											<i className="fa fa-eye-slash" />
+										)}
 									</button>
 								</div>
 							</div>
@@ -142,8 +165,11 @@ const SignUp = (props) => {
 									disabled={isSigningUp}
 									type="submit"
 								>
-									<CircularProgress visible={isSigningUp} theme="light" />
-									{isSigningUp ? 'Signing Up' : 'Sign Up'}
+									<CircularProgress
+										visible={isSigningUp}
+										theme="light"
+									/>
+									{isSigningUp ? "Signing Up" : "Sign Up"}
 								</button>
 							</div>
 						</form>

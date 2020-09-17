@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import useDidMount from 'hooks/useDidMount';
-import useDocumentTitle from 'hooks/useDocumentTitle';
-import Input from 'components/ui/Input';
-import { resetPassword } from 'actions/authActions';
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import useDidMount from "hooks/useDidMount";
+import useDocumentTitle from "hooks/useDocumentTitle";
+import Input from "components/ui/Input";
+import { resetPassword } from "actions/authActions";
 
-import CircularProgress from 'components/ui/CircularProgress';
+import CircularProgress from "components/ui/CircularProgress";
 
 const ForgotPassword = () => {
-	const { authStatus, isAuthenticating } = useSelector(state => ({
+	const { authStatus, isAuthenticating } = useSelector((state) => ({
 		isAuthenticating: state.app.isAuthenticating,
-		authStatus: state.app.authStatus
+		authStatus: state.app.authStatus,
 	}));
 	const dispatch = useDispatch();
 	const didMount = useDidMount();
@@ -18,7 +18,7 @@ const ForgotPassword = () => {
 	const [isSendingForgotPWRequest, setIsSending] = useState(false);
 	const [field, setField] = useState({});
 
-	useDocumentTitle('Forgot Password | Salinaka');
+	useDocumentTitle("Forgot Password | FarmDepo");
 	useEffect(() => {
 		if (didMount) {
 			setForgotPWStatus(authStatus);
@@ -39,12 +39,19 @@ const ForgotPassword = () => {
 	return (
 		<div className="forgot_password">
 			{forgotPWStatus.message && (
-				<h5 className={`text-center ${authStatus.success ? 'toast-success' : 'toast-error'}`}>
+				<h5
+					className={`text-center ${
+						authStatus.success ? "toast-success" : "toast-error"
+					}`}
+				>
 					{authStatus.message}
 				</h5>
 			)}
 			<h3>Forgot Your Password?</h3>
-			<p>Enter your email address and we will send you a password reset email.</p>
+			<p>
+				Enter your email address and we will send you a password reset
+				email.
+			</p>
 			<br />
 			<Input
 				field="email"
@@ -67,7 +74,9 @@ const ForgotPassword = () => {
 					theme="light"
 					visible={isSendingForgotPWRequest}
 				/>
-				{isSendingForgotPWRequest ? 'Sending Password Reset Email' : 'Send Password Reset Email'}
+				{isSendingForgotPWRequest
+					? "Sending Password Reset Email"
+					: "Send Password Reset Email"}
 			</button>
 		</div>
 	);
