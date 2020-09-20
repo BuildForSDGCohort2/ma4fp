@@ -131,7 +131,6 @@ function* authSaga({ type, payload }) {
 					payload.email,
 					payload.password
 				);
-				yield call(firebase.sendEmailVerification);
 				const fullname = payload.fullname
 					.split(" ")
 					.map((name) =>
@@ -150,6 +149,7 @@ function* authSaga({ type, payload }) {
 						ref.user.metadata.creationTime || new Date().getTime(),
 				};
 				yield call(firebase.addUser, ref.user.uid, user);
+				yield call(firebase.sendEmailVerification);
 				yield put(setProfile(user));
 				yield put(isAuthenticating(false));
 			} catch (e) {
