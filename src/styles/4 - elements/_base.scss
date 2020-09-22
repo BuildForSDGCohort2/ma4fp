@@ -74,11 +74,11 @@ h6 {
 
 .content {
 	width: 100%;
-	min-height: 100vh;
 	position: relative;
 	padding: $top $xxl-size;
 	display: flex;
 	animation: fadeIn 0.5s ease;
+	background-color: #eaf1e1;
 
 	@media (max-width: $mobile) {
 		padding: 5rem $m-size;
@@ -104,4 +104,9 @@ h6 {
 	padding: $m-size 0;
 	animation: fadeIn 0.5s ease;
 	position: relative;
+}
+
+.container {
+	width: 1200px;
+	margin: 0 auto;
 }
