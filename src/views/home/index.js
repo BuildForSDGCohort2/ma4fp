@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { selectFilter } from 'selectors/selector';
+import React, { useState, useEffect, useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { selectFilter } from "selectors/selector";
 
-import ProductList from 'components/product/ProductList';
-import ProductItem from 'components/product/ProductItem';
-import ProductAppliedFilters from 'components/product/ProductAppliedFilters';
-import Boundary from 'components/ui/Boundary';
-import ProductModalDetails from 'components/product/ProductModalDetails';
-import useModal from 'hooks/useModal';
-import useDocumentTitle from 'hooks/useDocumentTitle';
+import ProductList from "components/product/ProductList";
+import ProductItem from "components/product/ProductItem";
+import ProductAppliedFilters from "components/product/ProductAppliedFilters";
+import Boundary from "components/ui/Boundary";
+import ProductModalDetails from "components/product/ProductModalDetails";
+import useModal from "hooks/useModal";
+import useDocumentTitle from "hooks/useDocumentTitle";
 
 const Home = () => {
 	useDocumentTitle();
@@ -16,20 +16,23 @@ const Home = () => {
 	const [columnCount, setColumnCount] = useState(6);
 	const { isOpenModal, onOpenModal, onCloseModal } = useModal();
 
-	const { store } = useSelector(state => ({
+	const { store } = useSelector((state) => ({
 		store: {
 			filter: state.filter,
 			basket: state.basket,
 			filteredProducts: selectFilter(state.products.items, state.filter),
-			requestStatus: state.app.requestStatus
-		}
+			requestStatus: state.app.requestStatus,
+		},
 	}));
 
 	const onProductsLengthChanged = () => {
 		const width = window.screen.width - 250; // minus 250px padding
 
 		setColumnCount(Math.floor(width / 160));
-		if ((columnCount >= store.filteredProducts.length) && store.filteredProducts.length !== 0) {
+		if (
+			columnCount >= store.filteredProducts.length &&
+			store.filteredProducts.length !== 0
+		) {
 			setColumnCount(store.filteredProducts.length);
 		}
 	};
@@ -41,9 +44,15 @@ const Home = () => {
 	const dispatch = useDispatch();
 	const productListWrapper = useRef(null);
 
-	const isFiltered = ['keyword', 'brand', 'minPrice', 'maxPrice', 'sortBy'].some(key => !!store.filter[key]);
-	const displaySelected = product => setProductSelected(product);
-	const foundOnBasket = id => !!store.basket.find(item => item.id === id);
+	const isFiltered = [
+		"keyword",
+		"brand",
+		"minPrice",
+		"maxPrice",
+		"sortBy",
+	].some((key) => !!store.filter[key]);
+	const displaySelected = (product) => setProductSelected(product);
+	const foundOnBasket = (id) => !!store.basket.find((item) => item.id === id);
 
 	return (
 		<>
@@ -53,9 +62,14 @@ const Home = () => {
 						<div className="product-list-header-title">
 							{isFiltered && (
 								<h5>
-									{store.filteredProducts.length > 0
-										&& `Found ${store.filteredProducts.length} ${store.filteredProducts.length > 1 ? 'products' : 'product'}`
-									}
+									{store.filteredProducts.length > 0 &&
+										`Found ${
+											store.filteredProducts.length
+										} ${
+											store.filteredProducts.length > 1
+												? "products"
+												: "product"
+										}`}
 								</h5>
 							)}
 						</div>
@@ -68,7 +82,9 @@ const Home = () => {
 							<>
 								<ProductModalDetails
 									dispatch={dispatch}
-									foundOnBasket={foundOnBasket(productSelected.id)}
+									foundOnBasket={foundOnBasket(
+										productSelected.id
+									)}
 									isOpenModal={isOpenModal}
 									onCloseModal={onCloseModal}
 									overrideStyle={{ padding: 0 }}
@@ -77,23 +93,31 @@ const Home = () => {
 								<div
 									className="product-list"
 									ref={productListWrapper}
-									style={{ gridTemplateColumns: `repeat(${columnCount}, 160px)` }}
+									// style={{ gridTemplateColumns: `repeat(${columnCount}, 160px)` }}
 								>
-									{filteredProducts.length === 0 ? new Array(12).fill({}).map((product, index) => (
-										<ProductItem
-											foundOnBasket={false}
-											key={`product-skeleton ${index}`}
-											product={product}
-										/>
-									)) : filteredProducts.map(product => (
-										<ProductItem
-											displaySelected={displaySelected}
-											foundOnBasket={foundOnBasket(product.id)}
-											key={product.id}
-											onOpenModal={onOpenModal}
-											product={product}
-										/>
-									))}
+									{filteredProducts.length === 0
+										? new Array(12)
+												.fill({})
+												.map((product, index) => (
+													<ProductItem
+														foundOnBasket={false}
+														key={`product-skeleton ${index}`}
+														product={product}
+													/>
+												))
+										: filteredProducts.map((product) => (
+												<ProductItem
+													displaySelected={
+														displaySelected
+													}
+													foundOnBasket={foundOnBasket(
+														product.id
+													)}
+													key={product.id}
+													onOpenModal={onOpenModal}
+													product={product}
+												/>
+										  ))}
 								</div>
 							</>
 						)}
