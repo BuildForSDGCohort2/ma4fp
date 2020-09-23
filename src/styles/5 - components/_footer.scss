@@ -1,10 +1,11 @@
 .footer {
-	position: relative;
-	padding: 0 $xxl-size;
-	background: $off-white;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
+	// padding: 0 $xxl-size;
+	// background: $off-white;
+	// display: flex;
+	// align-items: center;
+	// justify-content: space-between;
+	display: grid;
+	grid-template-columns: repeat(2, 50%);
 
 	@include mobile {
 		padding: 0;
@@ -26,6 +27,7 @@
 
 .footer-col-1 {
 	flex-basis: 40%;
+	background-color: green;
 
 	@include mobile {
 		flex-basis: none;

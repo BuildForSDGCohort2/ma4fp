@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 
-import logo from '../../../static/logo_vertical_cropped.png';
-import * as ROUTE from 'constants/routes';
+import logo from "../../../static/logo_vertical_cropped.png";
+import * as ROUTE from "constants/routes";
 
 const Footer = ({ path }) => {
 	// hide the footer to these routes
@@ -13,12 +13,12 @@ const Footer = ({ path }) => {
 		ROUTE.ACCOUNT_EDIT,
 		ROUTE.CHECKOUT_STEP_1,
 		ROUTE.CHECKOUT_STEP_2,
-		ROUTE.CHECKOUT_STEP_3
+		ROUTE.CHECKOUT_STEP_3,
 	];
 
 	return hiddenPaths.includes(path) ? null : (
 		<footer className="footer">
-			<div className="footer-col-1">
+			{/* <div className="footer-col-1">
 				<strong><span>Developed by <a href="https://github.com/jgudo">JULIUS GUEVARRA</a></span></strong>
 			</div>
 			<div className="footer-col-2">
@@ -32,6 +32,11 @@ const Footer = ({ path }) => {
             <a href="https://github.com/jgudo/ecommerce-react">HERE</a>
 					</span>
 				</strong>
+			</div> */}
+			<div className="footer-col-1"></div>
+			<div className="footer-col-2">
+				<p>SOCIALS</p>
+				<div></div>
 			</div>
 		</footer>
 	);
