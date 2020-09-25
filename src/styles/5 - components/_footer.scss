@@ -4,30 +4,40 @@
 	// display: flex;
 	// align-items: center;
 	// justify-content: space-between;
-	display: grid;
-	grid-template-columns: repeat(2, 50%);
+	// display: grid;
+	// grid-template-columns: repeat(2, 50%);
 
-	@include mobile {
-		padding: 0;
-		padding-top: 2.5rem;
-		flex-direction: column;
-		text-align: center;
-	}
+	// @include mobile {
+	// 	padding: 0;
+	// 	padding-top: 2.5rem;
+	// 	flex-direction: column;
+	// 	text-align: center;
+	// }
 
-	a {
-		text-decoration: underline;
-	}
+	// a {
+	// 	text-decoration: underline;
+	// }
+	height: 12rem;
+	background: linear-gradient(
+		90deg,
+		rgba(99, 196, 82, 1) 0%,
+		rgba(99, 196, 82, 1) 50%,
+		rgba(249, 249, 249, 1) 50%,
+		rgba(255, 255, 255, 1) 100%
+	);
+}
+
+.footer-cols {
+	display: flex;
 }
 
 .footer-logo {
-	width: 6rem;
-	height: 6rem;
-	object-fit: contain;
+	margin-top: 5rem;
 }
 
 .footer-col-1 {
-	flex-basis: 40%;
-	background-color: green;
+	width: 50%;
+	text-align: center;
 
 	@include mobile {
 		flex-basis: none;
@@ -37,9 +47,10 @@
 }
 
 .footer-col-2 {
-	padding: 3rem 0;
-	text-align: center;
-	flex-basis: 20%;
+	width: 50%;
+	margin-left: 5rem;
+	margin-top: 1rem;
+	text-align: left;
 
 	@include mobile {
 		flex-basis: none;
@@ -49,21 +60,16 @@
 	}
 }
 
-.footer-col-3 {
-	flex-basis: 40%;
-	text-align: right;
-
-	@include mobile {
-		flex-basis: none;
-		order: 2;
-		text-align: center;
+.social-icons {
+	img {
+		width: 3.2rem;
+		margin-right: 1rem;
 	}
 }
 
 @include mobile {
 	.footer-col-1,
-	.footer-col-2,
-	.footer-col-3 {
+	.footer-col-2 {
 		width: 100%;
 		margin: $s-size 0;
 	}
