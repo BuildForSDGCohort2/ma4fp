@@ -4,6 +4,7 @@ import Input from "components/ui/Input";
 import useDocumentTitle from "hooks/useDocumentTitle";
 import useDidMount from "hooks/useDidMount";
 import { signUp } from "actions/authActions";
+import FarmGirl from "../../../images/farmgirl.svg";
 
 import CircularProgress from "components/ui/CircularProgress";
 
@@ -91,8 +92,9 @@ const SignUp = (props) => {
 							"input-error"
 						}`}
 					>
-						<h3>Sign up to FarmDepo</h3>
+						<img src={FarmGirl} alt="" />
 						<form onSubmit={onFormSubmit}>
+							<h3>Sign Up</h3>
 							<div className="signup-field">
 								<Input
 									field="fullname"
