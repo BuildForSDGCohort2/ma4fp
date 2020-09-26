@@ -1,38 +1,45 @@
 .signup {
-  width: 50rem;
-  margin: auto;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
+	background-color: white;
+	margin: auto;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	flex-direction: column;
 
-   @include mobile {
-    width: 100%;
-    margin-top: 2rem;
-  }
+	@include mobile {
+		width: 100%;
+		margin-top: 2rem;
+	}
 
-  .loader {
-    background: $background-color;
-  }
+	.loader {
+		background: $background-color;
+	}
 }
 
 .signup-wrapper {
-  width: 100%;
-  padding: $l-size;
-  padding-top: $m-size;
-  border: 1px solid $border-color-focus;
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+	padding: $l-size;
+	padding-top: $m-size;
+	border: 1px solid $border-color-focus;
 
-  @include mobile {
-    padding: $m-size;
-  }
+	img {
+		height: 25rem;
+	}
+
+	@include mobile {
+		padding: $m-size;
+	}
 }
 
 .signup-action {
-  display: flex;
-  justify-content: flex-end;
+	display: flex;
+	justify-content: flex-end;
 }
 
 .signup-button {
-  @include mobile {
-    width: 100%;
-  }
+	@include mobile {
+		width: 100%;
+	}
 }

@@ -12,6 +12,7 @@ import {
 import Input from "components/ui/Input";
 import { FORGOT_PASSWORD } from "constants/routes";
 import CircularProgress from "components/ui/CircularProgress";
+import FarmGirl from "../../../images/farmgirl.svg";
 
 const SignIn = (props) => {
 	const { authStatus, isAuthenticating } = useSelector((state) => ({
@@ -106,9 +107,10 @@ const SignIn = (props) => {
 						}`}
 					>
 						<div className="signin-main">
-							<h3>Sign in to FarmDepo</h3>
-							<br />
+							<img src={FarmGirl} alt="" />
+
 							<div className="signin-wrapper">
+								<h3>Sign In</h3>
 								<form onSubmit={onSubmitForm}>
 									<div className="signin-field">
 										<Input
@@ -166,10 +168,10 @@ const SignIn = (props) => {
 								</form>
 							</div>
 						</div>
-						<div className="signin-divider">
+						{/* <div className="signin-divider">
 							<h6>OR</h6>
-						</div>
-						<div className="signin-provider">
+						</div> */}
+						{/* <div className="signin-provider">
 							<button
 								className="button signin-provider-button provider-facebook"
 								disabled={isSigningIn}
@@ -209,7 +211,7 @@ const SignIn = (props) => {
 								)}
 								<span>Sign in with GitHub</span>
 							</button>
-						</div>
+						</div> */}
 					</div>
 					<div className="signin-message">
 						<span className="signin-info">
