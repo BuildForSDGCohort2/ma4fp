@@ -74,6 +74,7 @@ h6 {
 
 .content {
 	width: 100%;
+	min-height: calc(100vh - 10px);
 	position: relative;
 	padding: $top $xxl-size;
 	display: flex;
